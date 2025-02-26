@@ -28,6 +28,12 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        manifestPlaceholders = [
+            adMobAppId: System.getenv("AD_APP_ID") ?: "ca-app-pub-3940256099942544~3347511713",
+            mainBannerAdUnitId: System.getenv("MAIN_BANNER_AD_UNIT_ID") ?: "ca-app-pub-3940256099942544/6300978111",
+            detailBannerAdUnitId: System.getenv("DETAIL_BANNER_AD_UNIT_ID") ?: "ca-app-pub-3940256099942544/6300978111",
+            detailInterstitialAdUnitId: System.getenv("DETAIL_INTERSTITIAL_AD_UNIT_ID") ?: "ca-app-pub-3940256099942544/1033173712"
+        ]
     }
 
     buildTypes {
