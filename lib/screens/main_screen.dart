@@ -11,16 +11,22 @@ class MainScreen extends StatelessWidget {
       id: 21,
       name: '탁구',
       icon: '🏓',
+      maxRound: 5,
+      scorePerRound: 11,
     ),
     Sport(
       id: 2,
       name: '피클볼',
       icon: '🥒',
+      maxRound: 3,
+      scorePerRound: 11,
     ),
     Sport(
       id: 3,
       name: '배드민턴',
       icon: '🏸',
+      maxRound: 3,
+      scorePerRound: 21,
     ),
   ];
 
@@ -60,7 +66,7 @@ class MainScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => OptionScreen(
-                            sportName: sports[index].name,
+                            sport: sports[index],
                           ),
                         ),
                       );
