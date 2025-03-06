@@ -6,13 +6,20 @@ import '../models/score_option.dart';
 import '../models/sports.dart';
 import '../widgets/score_settings_dialog.dart';
 
-class OptionScreen extends StatelessWidget {
-  final Sport sport; // 선택된 스포츠 객체
+class OptionScreen extends StatefulWidget {
+  final Sport originalSport; // 원본 스포츠 객체
 
   const OptionScreen({
     Key? key,
-    required this.sport,
+    required this.originalSport,
   }) : super(key: key);
+
+  @override
+  State<OptionScreen> createState() => _OptionScreenState();
+}
+
+class _OptionScreenState extends State<OptionScreen> {
+  late Sport sport; // 작업용 복사본 스포츠 객체
 
   final List<ScoreOption> options = const [
     ScoreOption(
@@ -36,24 +43,72 @@ class OptionScreen extends StatelessWidget {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    // 원본 Sport 객체의 복사본 생성
+    _createSportCopy();
+  }
+
+  // 원본 Sport 객체로부터 복사본 생성
+  void _createSportCopy() {
+    sport = Sport(
+      name: widget.originalSport.name,
+      icon: widget.originalSport.icon,
+      id: widget.originalSport.id,
+      maxRound: widget.originalSport.maxRound,
+      scorePerRound: widget.originalSport.scorePerRound,
+    );
+
+    // 종목별 기본값 설정
+    _setDefaultSettings();
+  }
+
+  // 종목별 기본 설정 적용
+  void _setDefaultSettings() {
+    // 스포츠에 따라 기본 설정 초기화
+    if (sport.name == '배드민턴') {
+      sport.updateRoundSettings(newMaxRound: 3, newScorePerRound: 21);
+    } else if (sport.name == '탁구') {
+      sport.updateRoundSettings(newMaxRound: 5, newScorePerRound: 11);
+    } else if (sport.name == '피클볼') {
+      sport.updateRoundSettings(newMaxRound: 3, newScorePerRound: 11);
+    } else {
+      sport.updateRoundSettings(newMaxRound: 3, newScorePerRound: 21);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: _buildAppBar(),
-      body: _buildBody(context),
+    return WillPopScope(
+      onWillPop: () async {
+        // 뒤로가기 시 설정 초기화
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundColor,
+        appBar: _buildAppBar(),
+        body: _buildBody(context),
+      ),
     );
   }
 
   // 메인 화면의 body를 구성하는 메소드
   // 옵션 카드 목록과 광고 배너를 포함
   Widget _buildBody(BuildContext context) {
+    // MediaQuery를 통해 하단 패딩값 가져오기
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+
     return Column(
       children: [
         Expanded(
           child: _buildOptionCards(context),
         ),
-        SizedBox(height: 8),
-        const BannerAdWidget(type: BannerAdType.detail),
+        Column(
+          children: [
+            const BannerAdWidget(type: BannerAdType.detail),
+            SizedBox(height: bottomPadding), // 하단 SafeArea 영역만큼 패딩 추가
+          ],
+        ),
       ],
     );
   }
@@ -87,14 +142,13 @@ class OptionScreen extends StatelessWidget {
   Widget _buildOptionCards(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 16.0),
-      child: Center(
-        child: Column(
-          children: [
-            _buildOptionCardRow(context),
-            SizedBox(height: 18),
-            _buildSingleOptionCard(context),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start, // 왼쪽 정렬을 위해 추가
+        children: [
+          _buildOptionCardRow(context),
+          SizedBox(height: 18),
+          _buildSingleOptionCard(context),
+        ],
       ),
     );
   }
@@ -128,11 +182,14 @@ class OptionScreen extends StatelessWidget {
   }
 
   // 두 번째 줄의 단일 옵션 카드를 구성하는 메소드
-  // 커스텀 옵션 카드를 화면 절반 크기로 배치
+  // 커스텀 옵션 카드를 화면 절반 크기로 왼쪽 정렬
   Widget _buildSingleOptionCard(BuildContext context) {
-    return SizedBox(
-      width: (MediaQuery.of(context).size.width - 36) / 2,
-      child: _buildOptionCard(context, options[2], useExpanded: false),
+    return Align(
+      alignment: Alignment.centerLeft, // 왼쪽 정렬
+      child: SizedBox(
+        width: (MediaQuery.of(context).size.width - 36) / 2,
+        child: _buildOptionCard(context, options[2], useExpanded: false),
+      ),
     );
   }
 
@@ -152,11 +209,43 @@ class OptionScreen extends StatelessWidget {
   }
 
   void _handleOptionSelected(BuildContext context, ScoreOption option) {
+    // 선택된 옵션에 따라 Sport 객체의 기본값 재설정
+    switch (option.id) {
+      case 'official':
+        // 공식 규칙: 종목별 기본값 설정
+        if (sport.name == '배드민턴') {
+          sport.updateRoundSettings(newMaxRound: 3, newScorePerRound: 21);
+        } else if (sport.name == '탁구') {
+          sport.updateRoundSettings(newMaxRound: 5, newScorePerRound: 11);
+        } else if (sport.name == '피클볼') {
+          sport.updateRoundSettings(newMaxRound: 3, newScorePerRound: 11);
+        } else {
+          sport.updateRoundSettings(newMaxRound: 3, newScorePerRound: 21);
+        }
+        break;
+      case 'single':
+        // 단일 라운드: 종목별 점수 설정
+        if (sport.name == '배드민턴') {
+          sport.updateRoundSettings(newMaxRound: 1, newScorePerRound: 21);
+        } else if (sport.name == '탁구' || sport.name == '피클볼') {
+          sport.updateRoundSettings(newMaxRound: 1, newScorePerRound: 11);
+        } else {
+          sport.updateRoundSettings(newMaxRound: 1, newScorePerRound: 21);
+        }
+        break;
+      case 'custom':
+        // 커스텀: 현재 값 유지
+        break;
+    }
+
     // 선택된 옵션에 따라 설정 팝업 표시
     _showSettingsDialog(context, option);
   }
 
   void _showSettingsDialog(BuildContext context, ScoreOption option) {
+    // 커스텀 옵션인 경우에만 사용자가 설정 가능하도록 함
+    bool allowCustomSettings = option.id == 'custom';
+
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -164,11 +253,14 @@ class OptionScreen extends StatelessWidget {
       builder: (context) => ScoreSettingsDialog(
         sport: sport,
         option: option,
+        allowCustomSettings: allowCustomSettings,
         onSettingsChanged: (maxRound, scorePerRound) {
-          sport.updateRoundSettings(
-            newMaxRound: maxRound,
-            newScorePerRound: scorePerRound,
-          );
+          setState(() {
+            sport.updateRoundSettings(
+              newMaxRound: maxRound,
+              newScorePerRound: scorePerRound,
+            );
+          });
           _showOptionSelectedSnackBar(context, option);
         },
       ),

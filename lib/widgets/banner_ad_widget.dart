@@ -29,8 +29,8 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
       return AdConfig.testBannerAdUnitId;
     }
     return widget.type == BannerAdType.main
-        ? AdConfig.releaseMainBannerAdUnitId
-        : AdConfig.releaseDetailBannerAdUnitId;
+        ? AdConfig.releaseBannerAdUnitId
+        : AdConfig.releaseBannerAdUnitId;
   }
 
   @override
