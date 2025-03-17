@@ -67,11 +67,11 @@ class _OptionScreenState extends State<OptionScreen> {
   // 종목별 기본 설정 적용
   void _setDefaultSettings() {
     // 스포츠에 따라 기본 설정 초기화
-    if (sport.name == '배드민턴') {
+    if (sport.name == 'sports.badminton') {
       sport.updateRoundSettings(newMaxRound: 3, newScorePerRound: 21);
-    } else if (sport.name == '탁구') {
+    } else if (sport.name == 'sports.tableTennis') {
       sport.updateRoundSettings(newMaxRound: 5, newScorePerRound: 11);
-    } else if (sport.name == '피클볼') {
+    } else if (sport.name == 'sports.pickleball') {
       sport.updateRoundSettings(newMaxRound: 3, newScorePerRound: 11);
     } else {
       sport.updateRoundSettings(newMaxRound: 3, newScorePerRound: 21);
@@ -214,11 +214,11 @@ class _OptionScreenState extends State<OptionScreen> {
     switch (option.id) {
       case 'official':
         // 공식 규칙: 종목별 기본값 설정
-        if (sport.name == '배드민턴') {
+        if (sport.name == 'sports.badminton') {
           sport.updateRoundSettings(newMaxRound: 3, newScorePerRound: 21);
-        } else if (sport.name == '탁구') {
+        } else if (sport.name == 'sports.tableTennis') {
           sport.updateRoundSettings(newMaxRound: 5, newScorePerRound: 11);
-        } else if (sport.name == '피클볼') {
+        } else if (sport.name == 'sports.pickleball') {
           sport.updateRoundSettings(newMaxRound: 3, newScorePerRound: 11);
         } else {
           sport.updateRoundSettings(newMaxRound: 3, newScorePerRound: 21);
@@ -226,9 +226,10 @@ class _OptionScreenState extends State<OptionScreen> {
         break;
       case 'single':
         // 단일 라운드: 종목별 점수 설정
-        if (sport.name == '배드민턴') {
+        if (sport.name == 'sports.badminton') {
           sport.updateRoundSettings(newMaxRound: 1, newScorePerRound: 21);
-        } else if (sport.name == '탁구' || sport.name == '피클볼') {
+        } else if (sport.name == 'sports.tableTennis' ||
+            sport.name == 'sports.pickleball') {
           sport.updateRoundSettings(newMaxRound: 1, newScorePerRound: 11);
         } else {
           sport.updateRoundSettings(newMaxRound: 1, newScorePerRound: 21);

@@ -22,6 +22,7 @@
     }
   },
   "game": {
+    "title": "Play {}",
     "round": "Round",
     "set": "Set",
     "score": "Score",
@@ -58,6 +59,18 @@
       "rounds": "Number of Sets",
       "scorePerRound": "Points per Set",
       "customScore": "Custom Score",
+      "customScore.hint": "Enter points",
+      "scorePoints": "{} pts",
+      "summary": {
+        "rounds": "Number of Sets: {}",
+        "score": "Points per Set: {}"
+      },
+      "error": {
+        "required": "Please enter points",
+        "numberOnly": "Numbers only",
+        "minScore": "Minimum 1 point",
+        "maxScore": "Maximum 99 points"
+      },
       "cancel": "Cancel",
       "confirm": "Confirm"
     }

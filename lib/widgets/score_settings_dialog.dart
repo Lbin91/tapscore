@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../models/score_option.dart';
 import '../models/sports.dart';
 import '../theme/app_colors.dart';
@@ -36,13 +37,13 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
     switch (widget.option.id) {
       case 'official':
         // 공식 규칙: 종목별로 다른 설정
-        if (widget.sport.name == '배드민턴') {
+        if (widget.sport.name == 'sports.badminton') {
           _maxRound = 3; // 배드민턴 기본 3세트
           _scorePerRound = 21; // 21점
-        } else if (widget.sport.name == '탁구') {
+        } else if (widget.sport.name == 'sports.tableTennis') {
           _maxRound = 5; // 탁구 기본 5세트
           _scorePerRound = 11; // 11점
-        } else if (widget.sport.name == '피클볼') {
+        } else if (widget.sport.name == 'sports.pickleball') {
           _maxRound = 3; // 피클볼 기본 3세트
           _scorePerRound = 11; // 11점
         } else {
@@ -54,9 +55,10 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
         _maxRound = 1; // 단일 라운드: 1세트 설정
 
         // 종목별 단일 라운드 점수 설정
-        if (widget.sport.name == '배드민턴') {
+        if (widget.sport.name == 'sports.badminton') {
           _scorePerRound = 21;
-        } else if (widget.sport.name == '탁구' || widget.sport.name == '피클볼') {
+        } else if (widget.sport.name == 'sports.tableTennis' ||
+            widget.sport.name == 'sports.pickleball') {
           _scorePerRound = 11;
         } else {
           _scorePerRound = 21;
@@ -80,17 +82,17 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
   // 점수 입력값 검증
   String? _validateScore(String? value) {
     if (value == null || value.isEmpty) {
-      return '점수를 입력해주세요';
+      return 'dialog.settings.error.required'.tr();
     }
     int? score = int.tryParse(value);
     if (score == null) {
-      return '숫자만 입력해주세요';
+      return 'dialog.settings.error.numberOnly'.tr();
     }
     if (score < 1) {
-      return '1점 이상 입력해주세요';
+      return 'dialog.settings.error.minScore'.tr();
     }
     if (score > 99) {
-      return '99점 이하로 입력해주세요';
+      return 'dialog.settings.error.maxScore'.tr();
     }
     return null;
   }
@@ -102,7 +104,7 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
       child: AlertDialog(
         backgroundColor: AppColors.backgroundColor,
         title: Text(
-          '${widget.option.name} 설정',
+          widget.option.name.tr(),
           style: TextStyle(
             color: AppColors.mainColor,
             fontWeight: FontWeight.bold,
@@ -112,7 +114,7 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.option.description),
+            Text(widget.option.description.tr()),
             SizedBox(height: 16),
             widget.allowCustomSettings
                 ? _buildCustomSettings()
@@ -128,7 +130,7 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
               backgroundColor: Colors.grey[100],
             ),
             child: Text(
-              '취소',
+              'common.cancel'.tr(),
               style: TextStyle(color: AppColors.subMainColor),
             ),
           ),
@@ -161,7 +163,7 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
               elevation: 0,
             ),
             child: Text(
-              '확인',
+              'common.confirm'.tr(),
               style: TextStyle(color: AppColors.mainTitleColor),
             ),
           ),
@@ -175,9 +177,15 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('• 세트 수: $_maxRound'),
+        Text(
+          'dialog.settings.summary.rounds'.tr(args: ['$_maxRound']),
+          style: TextStyle(fontSize: 14),
+        ),
         SizedBox(height: 8),
-        Text('• 세트당 점수: $_scorePerRound'),
+        Text(
+          'dialog.settings.summary.score'.tr(args: ['$_scorePerRound']),
+          style: TextStyle(fontSize: 14),
+        ),
       ],
     );
   }
@@ -187,11 +195,13 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('세트 수', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('dialog.settings.rounds'.tr(),
+            style: TextStyle(fontWeight: FontWeight.bold)),
         SizedBox(height: 8),
         _buildRoundSelector(),
         SizedBox(height: 16),
-        Text('세트당 점수', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('dialog.settings.scorePerRound'.tr(),
+            style: TextStyle(fontWeight: FontWeight.bold)),
         SizedBox(height: 8),
         _buildScoreSelector(),
         if (_isCustomScore) ...[
@@ -245,9 +255,10 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
     // 종목별 점수 옵션 생성
     List<int> scoreOptions = [];
 
-    if (widget.sport.name == '배드민턴') {
+    if (widget.sport.name == 'sports.badminton') {
       scoreOptions = [15, 21, 30];
-    } else if (widget.sport.name == '탁구' || widget.sport.name == '피클볼') {
+    } else if (widget.sport.name == 'sports.tableTennis' ||
+        widget.sport.name == 'sports.pickleball') {
       scoreOptions = [11, 15, 21];
     } else {
       scoreOptions = [11, 15, 21]; // 기본값
@@ -287,7 +298,7 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
             ),
             child: Center(
               child: Text(
-                '직접 입력',
+                'dialog.settings.customScore'.tr(),
                 style: TextStyle(
                   color: _isCustomScore ? AppColors.mainColor : Colors.black,
                   fontWeight: FontWeight.bold,
@@ -321,7 +332,7 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
         ),
         child: Center(
           child: Text(
-            '$score점',
+            'dialog.settings.scorePoints'.tr(args: ['$score']),
             style: TextStyle(
               color: isSelected ? Colors.white : Colors.black,
               fontWeight: FontWeight.bold,
@@ -338,7 +349,7 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
       keyboardType: TextInputType.number,
       validator: _validateScore,
       decoration: InputDecoration(
-        hintText: '점수 직접 입력',
+        hintText: 'dialog.settings.customScore.hint'.tr(),
         errorStyle: TextStyle(color: Colors.red),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),

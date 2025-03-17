@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../widgets/sport_card.dart';
 import '../models/sports.dart';
@@ -9,21 +10,21 @@ class MainScreen extends StatelessWidget {
   final List<Sport> sports = [
     Sport(
       id: 21,
-      name: '탁구',
+      name: 'sports.tableTennis'.tr(),
       icon: '🏓',
       maxRound: 5,
       scorePerRound: 11,
     ),
     Sport(
       id: 2,
-      name: '피클볼',
+      name: 'sports.pickleball'.tr(),
       icon: '🥒',
       maxRound: 3,
       scorePerRound: 11,
     ),
     Sport(
       id: 3,
-      name: '배드민턴',
+      name: 'sports.badminton'.tr(),
       icon: '🏸',
       maxRound: 3,
       scorePerRound: 21,
@@ -73,7 +74,7 @@ class MainScreen extends StatelessWidget {
                 itemCount: sports.length,
                 itemBuilder: (context, index) {
                   return SportCard(
-                    sportName: sports[index].name,
+                    sportName: sports[index].translatedName,
                     sportIcon: sports[index].icon,
                     onTap: () {
                       _navigateToOptionScreen(context, sports[index]);

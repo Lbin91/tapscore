@@ -8,6 +8,7 @@ import '../theme/app_colors.dart';
 import '../widgets/banner_ad_widget.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../config/ad_config.dart'; // AdConfig import 추가
+import 'package:easy_localization/easy_localization.dart';
 
 class GameScreen extends StatefulWidget {
   final Sport sport;
@@ -97,7 +98,7 @@ class _GameScreenState extends State<GameScreen> {
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       title: Text(
-        '${widget.sport.name} 게임',
+        '${'game.title'.tr(args: [widget.sport.translatedName])}',
         style: TextStyle(
           color: AppColors.mainTitleColor,
           fontSize: 20,
@@ -112,7 +113,7 @@ class _GameScreenState extends State<GameScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Center(
             child: Text(
-              '라운드 $currentRound/${widget.maxRound}',
+              '${'game.round'.tr()} $currentRound/${widget.maxRound}',
               style: TextStyle(
                 color: AppColors.mainTitleColor,
                 fontWeight: FontWeight.bold,
@@ -198,7 +199,7 @@ class _GameScreenState extends State<GameScreen> {
           child: Column(
             children: [
               Text(
-                '레드 테이블',
+                'game.table.red'.tr(),
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.red.shade300,
@@ -207,8 +208,12 @@ class _GameScreenState extends State<GameScreen> {
               SizedBox(height: 4),
               Text(
                 player1TableIndex == 0
-                    ? '플레이어 1 ($player1SetWins승)'
-                    : '플레이어 2 ($player2SetWins승)',
+                    ? '${'game.player.one'.tr()} (${'game.player.wins'.tr(args: [
+                            player1SetWins.toString()
+                          ])})'
+                    : '${'game.player.two'.tr()} (${'game.player.wins'.tr(args: [
+                            player2SetWins.toString()
+                          ])})',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
@@ -223,7 +228,7 @@ class _GameScreenState extends State<GameScreen> {
           child: Column(
             children: [
               Text(
-                '블루 테이블',
+                'game.table.blue'.tr(),
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.blue.shade300,
@@ -232,8 +237,12 @@ class _GameScreenState extends State<GameScreen> {
               SizedBox(height: 4),
               Text(
                 player1TableIndex == 1
-                    ? '플레이어 1 ($player1SetWins승)'
-                    : '플레이어 2 ($player2SetWins승)',
+                    ? '${'game.player.one'.tr()} (${'game.player.wins'.tr(args: [
+                            player1SetWins.toString()
+                          ])})'
+                    : '${'game.player.two'.tr()} (${'game.player.wins'.tr(args: [
+                            player2SetWins.toString()
+                          ])})',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
@@ -287,13 +296,13 @@ class _GameScreenState extends State<GameScreen> {
 
     // 서브권 설정 후, 스포츠별 규칙에 따라 처리
     switch (widget.sport.name) {
-      case '배드민턴':
+      case 'sports.badminton':
         _handleBadmintonRule(teamIndex);
         break;
-      case '탁구':
+      case 'sports.tableTennis':
         _handleTableTennisRule(teamIndex);
         break;
-      case '피클볼':
+      case 'sports.pickleball':
         _handlePickleballRule(teamIndex);
         break;
       default:
@@ -430,7 +439,7 @@ class _GameScreenState extends State<GameScreen> {
         serverIndex = lastAction.serverIndex;
 
         // 탁구인 경우 서브 카운트 조정 (구현이 복잡하므로 간단하게 처리)
-        if (widget.sport.name == '탁구') {
+        if (widget.sport.name == 'sports.tableTennis') {
           int totalScore = redScore + blueScore;
           serveCount = totalScore % 2;
         }
@@ -511,18 +520,25 @@ class _GameScreenState extends State<GameScreen> {
 
   // 라운드 종료와 동시에 게임 종료를 알리는 다이얼로그
   void _showRoundEndAndGameOverDialog() {
-    String tableWinner = redScore > blueScore ? "레드팀" : "블루팀";
+    String tableWinner =
+        redScore > blueScore ? 'game.table.red'.tr() : 'game.table.blue'.tr();
     String playerWinner = "";
 
     // 어떤 플레이어가 이겼는지 확인
     if (redScore > blueScore) {
-      playerWinner = player1TableIndex == 0 ? "플레이어 1" : "플레이어 2";
+      playerWinner = player1TableIndex == 0
+          ? 'game.player.one'.tr()
+          : 'game.player.two'.tr();
     } else {
-      playerWinner = player1TableIndex == 1 ? "플레이어 1" : "플레이어 2";
+      playerWinner = player1TableIndex == 1
+          ? 'game.player.one'.tr()
+          : 'game.player.two'.tr();
     }
 
     // 최종 승자
-    String finalWinner = player1SetWins > player2SetWins ? "플레이어 1" : "플레이어 2";
+    String finalWinner = player1SetWins > player2SetWins
+        ? 'game.player.one'.tr()
+        : 'game.player.two'.tr();
     int winnerSets = math.max(player1SetWins, player2SetWins);
     int loserSets = math.min(player1SetWins, player2SetWins);
 
@@ -530,17 +546,22 @@ class _GameScreenState extends State<GameScreen> {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: Text('게임 종료'),
-        content: Text('$tableWinner ($playerWinner) 승리!\n\n'
-            '$finalWinner가 $winnerSets-$loserSets로 최종 승리했습니다!\n'
-            '총 $currentRound 세트 진행 후 게임이 종료되었습니다.'),
+        title: Text('dialog.gameOver.title'.tr()),
+        content: Text(
+          'dialog.gameOver.content'.tr(args: [
+            finalWinner,
+            winnerSets.toString(),
+            loserSets.toString(),
+            currentRound.toString(),
+          ]),
+        ),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.pop(context);
               Navigator.pop(context); // 이전 화면으로 돌아가기
             },
-            child: Text('확인'),
+            child: Text('dialog.gameOver.confirm'.tr()),
           ),
         ],
       ),
@@ -548,29 +569,35 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _showRoundEndDialog() {
-    String winner = redScore > blueScore ? "레드팀" : "블루팀";
+    String winner =
+        redScore > blueScore ? 'game.table.red'.tr() : 'game.table.blue'.tr();
     String playerWinner = "";
 
     // 어떤 플레이어가 이겼는지 확인
     if (redScore > blueScore) {
-      playerWinner = player1TableIndex == 0 ? "플레이어 1" : "플레이어 2";
+      playerWinner = player1TableIndex == 0
+          ? 'game.player.one'.tr()
+          : 'game.player.two'.tr();
     } else {
-      playerWinner = player1TableIndex == 1 ? "플레이어 1" : "플레이어 2";
+      playerWinner = player1TableIndex == 1
+          ? 'game.player.one'.tr()
+          : 'game.player.two'.tr();
     }
 
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: Text('라운드 종료'),
-        content: Text('$winner ($playerWinner) 승리!\n\n$currentRound 라운드 종료.'),
+        title: Text('dialog.roundEnd.title'.tr()),
+        content: Text('dialog.roundEnd.content'
+            .tr(args: [playerWinner, currentRound.toString()])),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.pop(context);
               _showTableChangeDialog();
             },
-            child: Text('다음'),
+            child: Text('dialog.roundEnd.next'.tr()),
           ),
         ],
       ),
@@ -584,13 +611,13 @@ class _GameScreenState extends State<GameScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.backgroundColor,
         title: Text(
-          '테이블 교체',
+          'dialog.tableChange.title'.tr(),
           style: TextStyle(
             color: AppColors.mainColor,
             fontWeight: FontWeight.bold,
           ),
         ),
-        content: Text('테이블을 교체하시겠습니까?'),
+        content: Text('dialog.tableChange.content'.tr()),
         actions: [
           TextButton(
             onPressed: () {
@@ -601,7 +628,7 @@ class _GameScreenState extends State<GameScreen> {
               backgroundColor: Colors.grey[100],
             ),
             child: Text(
-              '아니오',
+              'dialog.tableChange.no'.tr(),
               style: TextStyle(color: AppColors.subMainColor),
             ),
           ),
@@ -615,7 +642,7 @@ class _GameScreenState extends State<GameScreen> {
               elevation: 0,
             ),
             child: Text(
-              '예',
+              'dialog.tableChange.yes'.tr(),
               style: TextStyle(color: AppColors.mainTitleColor),
             ),
           ),
