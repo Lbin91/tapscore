@@ -4,6 +4,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'screens/main_screen.dart';
 import 'theme/app_colors.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,6 +14,11 @@ void main() async {
 
   // 앱 버전 정보 가져오기
   final packageInfo = await PackageInfo.fromPlatform();
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(
     EasyLocalization(
