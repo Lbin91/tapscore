@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "300805243904",
+    "project_id": "tapscore-235cc",
+    "storage_bucket": "tapscore-235cc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:300805243904:android:e29e59c953b0676a0504e5",
+        "android_client_info": {
+          "package_name": "com.lbin.tapscore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-_xT16Vb0jl0KO68MoEQG_eDsVbPb1lg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
