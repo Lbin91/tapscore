@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../widgets/option_card.dart';
 import '../widgets/banner_ad_widget.dart';
 import '../theme/app_colors.dart';
@@ -24,21 +25,21 @@ class _OptionScreenState extends State<OptionScreen> {
   final List<ScoreOption> options = const [
     ScoreOption(
       id: 'official',
-      name: '공식 규칙',
+      name: 'options.official.name',
       icon: '📋',
-      description: '공식 규칙에 따라 점수를 기록합니다.',
+      description: 'options.official.description',
     ),
     ScoreOption(
       id: 'single',
-      name: '단일 라운드',
+      name: 'options.single.name',
       icon: '1️⃣',
-      description: '단일 라운드로 게임을 진행합니다.',
+      description: 'options.single.description',
     ),
     ScoreOption(
       id: 'custom',
-      name: '커스텀',
+      name: 'options.custom.name',
       icon: '⚙️',
-      description: '원하는 방식으로 점수를 기록합니다.',
+      description: 'options.custom.description',
     ),
   ];
 
@@ -128,7 +129,7 @@ class _OptionScreenState extends State<OptionScreen> {
   // 스포츠 이름과 점수 방식 텍스트를 표시
   Widget _buildAppBarTitle() {
     return Text(
-      '${sport.name} 점수 방식',
+      'dialog.settings.title'.tr(args: [sport.name.tr()]),
       style: TextStyle(
         color: AppColors.subMainTitleColor,
         fontSize: 20,
@@ -198,7 +199,7 @@ class _OptionScreenState extends State<OptionScreen> {
   void _showOptionSelectedSnackBar(BuildContext context, ScoreOption option) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('${option.name} 설정이 적용되었습니다.'),
+        content: Text('snackbar.settingsApplied'.tr(args: [option.name.tr()])),
         backgroundColor: AppColors.subMainColor,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(

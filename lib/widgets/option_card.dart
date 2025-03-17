@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../theme/app_colors.dart';
 
 class OptionCard extends StatelessWidget {
@@ -33,7 +34,7 @@ class OptionCard extends StatelessWidget {
             ),
             SizedBox(height: 12),
             Text(
-              optionName,
+              optionName.tr(),
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,

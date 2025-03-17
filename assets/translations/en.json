@@ -1,0 +1,74 @@
+{
+  "app": {
+    "name": "TapScore"
+  },
+  "sports": {
+    "badminton": "Badminton",
+    "tableTennis": "Table Tennis",
+    "pickleball": "Pickleball"
+  },
+  "options": {
+    "official": {
+      "name": "Official Rules",
+      "description": "Score according to official rules."
+    },
+    "single": {
+      "name": "Single Round",
+      "description": "Play a single round game."
+    },
+    "custom": {
+      "name": "Custom",
+      "description": "Set your own scoring rules."
+    }
+  },
+  "game": {
+    "round": "Round",
+    "set": "Set",
+    "score": "Score",
+    "serve": "Serve",
+    "table": {
+      "red": "Red Table",
+      "blue": "Blue Table"
+    },
+    "player": {
+      "one": "Player 1",
+      "two": "Player 2",
+      "wins": "{} wins"
+    }
+  },
+  "dialog": {
+    "roundEnd": {
+      "title": "Round End",
+      "content": "{} wins!\n\nRound {} ended.",
+      "next": "Next"
+    },
+    "gameOver": {
+      "title": "Game Over",
+      "content": "{} won {}-{}!\nGame ended after {} sets.",
+      "confirm": "Confirm"
+    },
+    "tableChange": {
+      "title": "Change Tables?",
+      "content": "Do you want to switch tables?",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "settings": {
+      "title": "{} Settings",
+      "rounds": "Number of Sets",
+      "scorePerRound": "Points per Set",
+      "customScore": "Custom Score",
+      "cancel": "Cancel",
+      "confirm": "Confirm"
+    }
+  },
+  "common": {
+    "undo": "Undo",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back"
+  },
+  "snackbar": {
+    "settingsApplied": "{} settings have been applied."
+  }
+} 

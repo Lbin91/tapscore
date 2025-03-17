@@ -1,0 +1,74 @@
+{
+  "app": {
+    "name": "탭스코어"
+  },
+  "sports": {
+    "badminton": "배드민턴",
+    "tableTennis": "탁구",
+    "pickleball": "피클볼"
+  },
+  "options": {
+    "official": {
+      "name": "공식 규칙",
+      "description": "공식 규칙에 따라 점수를 기록합니다."
+    },
+    "single": {
+      "name": "단일 라운드",
+      "description": "단일 라운드로 게임을 진행합니다."
+    },
+    "custom": {
+      "name": "커스텀",
+      "description": "원하는 방식으로 점수를 기록합니다."
+    }
+  },
+  "game": {
+    "round": "라운드",
+    "set": "세트",
+    "score": "점수",
+    "serve": "서브",
+    "table": {
+      "red": "레드 테이블",
+      "blue": "블루 테이블"
+    },
+    "player": {
+      "one": "플레이어 1",
+      "two": "플레이어 2",
+      "wins": "{}승"
+    }
+  },
+  "dialog": {
+    "roundEnd": {
+      "title": "라운드 종료",
+      "content": "{} 승리!\n\n{} 라운드가 종료되었습니다.",
+      "next": "다음"
+    },
+    "gameOver": {
+      "title": "게임 종료",
+      "content": "{}가 {}-{}로 승리했습니다!\n총 {} 세트 진행 후 게임이 종료되었습니다.",
+      "confirm": "확인"
+    },
+    "tableChange": {
+      "title": "테이블 교체",
+      "content": "테이블을 교체하시겠습니까?",
+      "yes": "예",
+      "no": "아니오"
+    },
+    "settings": {
+      "title": "{} 설정",
+      "rounds": "세트 수",
+      "scorePerRound": "세트당 점수",
+      "customScore": "직접 입력",
+      "cancel": "취소",
+      "confirm": "확인"
+    }
+  },
+  "common": {
+    "undo": "되돌리기",
+    "cancel": "취소",
+    "confirm": "확인",
+    "back": "뒤로"
+  },
+  "snackbar": {
+    "settingsApplied": "{} 설정이 적용되었습니다."
+  }
+} 
