@@ -89,5 +89,11 @@
   },
   "snackbar": {
     "settingsApplied": "{} settings have been applied."
+  },
+  "update": {
+    "title": "Update Required",
+    "message": "A new version is available.\nPlease update the app\nto continue using the service.",
+    "cancel": "Cancel",
+    "confirm": "Update"
   }
 } 

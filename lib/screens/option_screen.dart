@@ -133,55 +133,14 @@ class _OptionScreenState extends State<OptionScreen> {
     );
   }
 
-  // 종료 확인 다이얼로그의 UI를 구성하는 메소드
-  // 사용자에게 설정 변경 취소 여부를 확인
-  Widget _buildExitConfirmationDialog() {
-    return AlertDialog(
-      title: Text('dialog.exitConfirm.title'.tr()),
-      content: Text('dialog.exitConfirm.message'.tr()),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          child: Text(
-            'dialog.exitConfirm.cancel'.tr(),
-            style: const TextStyle(color: Colors.grey),
-          ),
-        ),
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(true),
-          child: Text(
-            'dialog.exitConfirm.confirm'.tr(),
-            style: TextStyle(
-              color: AppColors.mainColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // 뒤로 가기 전 확인 다이얼로그를 표시하는 메소드
-  Future<bool> _showExitConfirmationDialog() async {
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => _buildExitConfirmationDialog(),
-    );
-    return result ?? false;
-  }
-
   // 화면 종료 처리를 담당하는 메소드
   // 설정 변경 여부를 확인하고 적절한 처리를 수행
   Future<void> _handleScreenExit(bool didPop) async {
     if (didPop) return;
 
-    final bool shouldPop =
-        !_hasSettingsChanged() || await _showExitConfirmationDialog();
-    if (shouldPop && context.mounted) {
-      // TODO: Navigator.pop()의 두 번째 파라미터로 변경된 sport 객체를 전달하여
-      // 이전 화면에서 설정 변경사항을 반영할 수 있음
-      Navigator.of(context).pop();
-    }
+    // TODO: Navigator.pop()의 두 번째 파라미터로 변경된 sport 객체를 전달하여
+    // 이전 화면에서 설정 변경사항을 반영할 수 있음
+    Navigator.of(context).pop();
   }
 
   @override

@@ -92,10 +92,8 @@ class MyApp extends StatelessWidget {
         context: context,
         barrierDismissible: false, // 백그라운드 터치로 닫기 방지
         builder: (context) => AlertDialog(
-          title: const Text('업데이트 필요'),
-          content: const Text(
-            '새로운 버전이 출시되었습니다.\n원활한 서비스 이용을 위해\n업데이트가 필요합니다.',
-          ),
+          title: Text('update.title'.tr()),
+          content: Text('update.message'.tr()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -104,7 +102,7 @@ class MyApp extends StatelessWidget {
               onPressed: () {
                 SystemNavigator.pop(); // 앱 종료
               },
-              child: const Text('취소'),
+              child: Text('update.cancel'.tr()),
             ),
             TextButton(
               onPressed: () {
@@ -112,7 +110,7 @@ class MyApp extends StatelessWidget {
                 SystemNavigator.pop();
               },
               child: Text(
-                '업데이트',
+                'update.confirm'.tr(),
                 style: TextStyle(
                   color: AppColors.mainColor,
                   fontWeight: FontWeight.bold,

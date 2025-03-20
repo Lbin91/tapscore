@@ -73,12 +73,6 @@
       },
       "cancel": "취소",
       "confirm": "확인"
-    },
-    "exitConfirm": {
-      "title": "설정 변경 취소",
-      "message": "변경된 설정이 저장되지 않습니다.\n정말 나가시겠습니까?",
-      "cancel": "취소",
-      "confirm": "나가기"
     }
   },
   "common": {
@@ -89,5 +83,11 @@
   },
   "snackbar": {
     "settingsApplied": "{} 설정이 적용되었습니다."
+  },
+  "update": {
+    "title": "업데이트 필요",
+    "message": "새로운 버전이 출시되었습니다.\n원활한 서비스 이용을 위해\n업데이트가 필요합니다.",
+    "cancel": "취소",
+    "confirm": "업데이트"
   }
 } 
