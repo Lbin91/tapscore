@@ -73,6 +73,12 @@
       },
       "cancel": "Cancel",
       "confirm": "Confirm"
+    },
+    "exitConfirm": {
+      "title": "Cancel Settings",
+      "message": "Changes will not be saved.\nAre you sure you want to exit?",
+      "cancel": "Cancel",
+      "confirm": "Exit"
     }
   },
   "common": {
