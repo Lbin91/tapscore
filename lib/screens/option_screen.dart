@@ -84,11 +84,13 @@ class _OptionScreenState extends State<OptionScreen> {
     ScoreOption option,
     int maxRound,
     int scorePerRound,
+    bool isDoubles,
   ) {
     setState(() {
       sport.updateRoundSettings(
         newMaxRound: maxRound,
         newScorePerRound: scorePerRound,
+        newIsDoubles: isDoubles,
       );
     });
     _showOptionSelectedSnackBar(context, option);
@@ -105,12 +107,13 @@ class _OptionScreenState extends State<OptionScreen> {
       sport: sport,
       option: option,
       allowCustomSettings: allowCustomSettings,
-      onSettingsChanged: (maxRound, scorePerRound) {
+      onSettingsChanged: (maxRound, scorePerRound, isDoubles) {
         _applySettingsAndShowFeedback(
           context,
           option,
           maxRound,
           scorePerRound,
+          isDoubles,
         );
       },
     );

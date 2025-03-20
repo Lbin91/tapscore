@@ -4,11 +4,13 @@ import '../models/score_option.dart';
 import '../models/sports.dart';
 import '../theme/app_colors.dart';
 import '../screens/game_screen.dart';
+import '../screens/pickleball_doubles_screen.dart';
 
 class ScoreSettingsDialog extends StatefulWidget {
   final Sport sport;
   final ScoreOption option;
-  final Function(int maxRound, int scorePerRound) onSettingsChanged;
+  final Function(int maxRound, int scorePerRound, bool isDoubles)
+      onSettingsChanged;
   final bool allowCustomSettings; // 설정 변경 가능 여부 (커스텀 옵션일 때만 true)
 
   const ScoreSettingsDialog({
@@ -29,6 +31,7 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
   late TextEditingController _scoreController;
   final _formKey = GlobalKey<FormState>();
   bool _isCustomScore = false; // 커스텀 점수 입력 모드 여부
+  bool _isDoubles = false; // 단식/복식 선택 상태 (false: 단식, true: 복식)
 
   @override
   void initState() {
@@ -70,6 +73,10 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
         _scorePerRound = widget.sport.scorePerRound;
         break;
     }
+
+    // 이미 설정된 값이 있으면 사용
+    _isDoubles = widget.sport.isDoubles;
+
     _scoreController = TextEditingController(text: _scorePerRound.toString());
   }
 
@@ -116,6 +123,11 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
           children: [
             Text(widget.option.description.tr()),
             SizedBox(height: 16),
+            // 피클볼 종목인 경우에만 단식/복식 선택 표시
+            if (widget.sport.isPickleball) ...[
+              _buildGameTypeSelector(),
+              SizedBox(height: 16),
+            ],
             widget.allowCustomSettings
                 ? _buildCustomSettings()
                 : _buildFixedSettingsSummary(),
@@ -144,19 +156,41 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
               if (widget.allowCustomSettings && _isCustomScore) {
                 _scorePerRound = int.parse(_scoreController.text);
               }
+
               Navigator.pop(context);
-              widget.onSettingsChanged(_maxRound, _scorePerRound);
-              // 게임 화면으로 이동
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => GameScreen(
-                    sport: widget.sport,
-                    maxRound: _maxRound,
-                    scorePerRound: _scorePerRound,
-                  ),
-                ),
+              widget.onSettingsChanged(_maxRound, _scorePerRound, _isDoubles);
+
+              // 복사본 생성 (isDoubles 필드 업데이트)
+              Sport updatedSport = widget.sport.copyWith(
+                maxRound: _maxRound,
+                scorePerRound: _scorePerRound,
+                isDoubles: _isDoubles,
               );
+
+              // 피클볼 복식인 경우 PickleballDoublesScreen으로 이동, 그 외에는 GameScreen으로 이동
+              if (widget.sport.isPickleball && _isDoubles) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PickleballDoublesScreen(
+                      sport: updatedSport,
+                      maxRound: _maxRound,
+                      scorePerRound: _scorePerRound,
+                    ),
+                  ),
+                );
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GameScreen(
+                      sport: updatedSport,
+                      maxRound: _maxRound,
+                      scorePerRound: _scorePerRound,
+                    ),
+                  ),
+                );
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.mainColor,
@@ -169,6 +203,58 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
           ),
         ],
       ),
+    );
+  }
+
+  // 단식/복식 선택 위젯
+  Widget _buildGameTypeSelector() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'dialog.settings.gameType.title'.tr(),
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 8),
+        Row(
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  Radio<bool>(
+                    value: false,
+                    groupValue: _isDoubles,
+                    onChanged: (value) {
+                      setState(() {
+                        _isDoubles = value!;
+                      });
+                    },
+                    activeColor: AppColors.mainColor,
+                  ),
+                  Text('dialog.settings.gameType.singles'.tr()),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Row(
+                children: [
+                  Radio<bool>(
+                    value: true,
+                    groupValue: _isDoubles,
+                    onChanged: (value) {
+                      setState(() {
+                        _isDoubles = value!;
+                      });
+                    },
+                    activeColor: AppColors.mainColor,
+                  ),
+                  Text('dialog.settings.gameType.doubles'.tr()),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -186,6 +272,17 @@ class _ScoreSettingsDialogState extends State<ScoreSettingsDialog> {
           'dialog.settings.summary.score'.tr(args: ['$_scorePerRound']),
           style: TextStyle(fontSize: 14),
         ),
+        if (widget.sport.isPickleball) ...[
+          SizedBox(height: 8),
+          Text(
+            _isDoubles
+                ? 'gameType.doubles'.tr() +
+                    ' (${'gameType.doubles_short'.tr()})'
+                : 'gameType.singles'.tr() +
+                    ' (${'gameType.singles_short'.tr()})',
+            style: TextStyle(fontSize: 14),
+          ),
+        ],
       ],
     );
   }

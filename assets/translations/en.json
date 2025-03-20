@@ -24,6 +24,7 @@
   "game": {
     "title": "Play {}",
     "round": "Round",
+    "round_short": "R",
     "set": "Set",
     "score": "Score",
     "serve": "Serve",
@@ -72,7 +73,12 @@
         "maxScore": "Maximum 99 points"
       },
       "cancel": "Cancel",
-      "confirm": "Confirm"
+      "confirm": "Confirm",
+      "gameType": {
+        "title": "Game Type",
+        "singles": "Singles",
+        "doubles": "Doubles"
+      }
     },
     "exitConfirm": {
       "title": "Cancel Settings",
@@ -95,5 +101,11 @@
     "message": "A new version is available.\nPlease update the app\nto continue using the service.",
     "cancel": "Cancel",
     "confirm": "Update"
+  },
+  "gameType": {
+    "singles": "Singles",
+    "doubles": "Doubles",
+    "singles_short": "S",
+    "doubles_short": "D"
   }
 } 

@@ -96,9 +96,15 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   PreferredSizeWidget _buildAppBar() {
+    String gameTypeText = widget.sport.isDoubles
+        ? 'gameType.doubles_short'.tr()
+        : 'gameType.singles_short'.tr();
+
     return AppBar(
       title: Text(
-        '${'game.title'.tr(args: [widget.sport.translatedName])}',
+        '${'game.title'.tr(args: [
+              widget.sport.translatedName
+            ])} ($gameTypeText)',
         style: TextStyle(
           color: AppColors.mainTitleColor,
           fontSize: 20,
@@ -113,7 +119,7 @@ class _GameScreenState extends State<GameScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Center(
             child: Text(
-              '${'game.round'.tr()} $currentRound/${widget.maxRound}',
+              '${'game.round_short'.tr()} $currentRound/${widget.maxRound}',
               style: TextStyle(
                 color: AppColors.mainTitleColor,
                 fontWeight: FontWeight.bold,

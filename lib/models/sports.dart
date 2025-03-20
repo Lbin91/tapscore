@@ -34,6 +34,7 @@ class Sport {
   final SportType type;
   int maxRound;
   int scorePerRound;
+  bool isDoubles; // 단식/복식 여부 (true: 복식, false: 단식)
 
   // 종목별 기본 설정값 정의
   static const Map<SportType, Map<GameSettingType, SportSettings>>
@@ -56,6 +57,7 @@ class Sport {
     required this.type,
     required this.maxRound,
     required this.scorePerRound,
+    this.isDoubles = false, // 기본값은 단식
   });
 
   // 종목 이름 반환
@@ -66,6 +68,9 @@ class Sport {
 
   // 번역된 이름 반환
   String get translatedName => name.tr();
+
+  // 피클볼인지 확인하는 getter
+  bool get isPickleball => type == SportType.pickleball;
 
   // 설정 타입에 따른 기본값 적용
   void applyDefaultSettings(GameSettingType settingType) {
@@ -79,13 +84,17 @@ class Sport {
   void updateRoundSettings({
     required int newMaxRound,
     required int newScorePerRound,
+    bool? newIsDoubles,
   }) {
     maxRound = newMaxRound;
     scorePerRound = newScorePerRound;
+    if (newIsDoubles != null) {
+      isDoubles = newIsDoubles;
+    }
   }
 
   // 공식 규칙으로 Sport 인스턴스를 생성하는 팩토리 생성자
-  factory Sport.withOfficialSettings(SportType type) {
+  factory Sport.withOfficialSettings(SportType type, {bool isDoubles = false}) {
     final settings = defaultSettings[type]?[GameSettingType.official] ??
         const SportSettings(maxRound: 3, scorePerRound: 21);
 
@@ -93,6 +102,7 @@ class Sport {
       type: type,
       maxRound: settings.maxRound,
       scorePerRound: settings.scorePerRound,
+      isDoubles: isDoubles,
     );
   }
 
@@ -101,11 +111,13 @@ class Sport {
     SportType? type,
     int? maxRound,
     int? scorePerRound,
+    bool? isDoubles,
   }) {
     return Sport(
       type: type ?? this.type,
       maxRound: maxRound ?? this.maxRound,
       scorePerRound: scorePerRound ?? this.scorePerRound,
+      isDoubles: isDoubles ?? this.isDoubles,
     );
   }
 }

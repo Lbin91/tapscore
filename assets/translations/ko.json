@@ -24,6 +24,7 @@
   "game": {
     "title": "{} 플레이",
     "round": "라운드",
+    "round_short": "R",
     "set": "세트",
     "score": "점수",
     "serve": "서브",
@@ -72,7 +73,12 @@
         "maxScore": "99점 이하로 입력해주세요"
       },
       "cancel": "취소",
-      "confirm": "확인"
+      "confirm": "확인",
+      "gameType": {
+        "title": "게임 유형",
+        "singles": "단식",
+        "doubles": "복식"
+      }
     }
   },
   "common": {
@@ -89,5 +95,11 @@
     "message": "새로운 버전이 출시되었습니다.\n원활한 서비스 이용을 위해\n업데이트가 필요합니다.",
     "cancel": "취소",
     "confirm": "업데이트"
+  },
+  "gameType": {
+    "singles": "단식",
+    "doubles": "복식",
+    "singles_short": "단",
+    "doubles_short": "복"
   }
 } 
