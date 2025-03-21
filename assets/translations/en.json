@@ -27,7 +27,11 @@
     "round_short": "R",
     "set": "Set",
     "score": "Score",
-    "serve": "Serve",
+    "serve": {
+      "score": "{}-{}-{}",
+      "first": "First Serve",
+      "second": "Second Serve"
+    },
     "table": {
       "red": "Red Table",
       "blue": "Blue Table"
@@ -35,6 +39,10 @@
     "player": {
       "one": "Player 1",
       "two": "Player 2",
+      "short": {
+        "p1": "P1",
+        "p2": "P2"
+      },
       "wins": "{} wins"
     }
   },
